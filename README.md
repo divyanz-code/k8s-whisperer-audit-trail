@@ -131,3 +131,7 @@ k8s-whisperer-audit-trail/
 - NFT-based incident certificates for compliance auditing
 - Cross-cluster audit aggregation via Stellar anchors
 - Real-time WebSocket updates for the dashboard
+
+
+CAAOY65YLBPR766MQ3PXIQ24H53WMOLR7Z7G6CKP5KHKZ6N2YF2XEX6F
+![Screenshot](image.jpg).
