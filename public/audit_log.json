@@ -1,0 +1,41 @@
+[
+  {
+    "incident_id": "INC-001-oom-7d574d",
+    "timestamp": "2026-03-30T05:23:00Z",
+    "anomaly_type": "OOMKilled",
+    "affected_resource": "default/oom-test-7d574d978b-dxssq",
+    "plan_action": "increase_memory_limit",
+    "plan_blast_radius": "medium",
+    "decision": "auto_executed",
+    "diagnosis": "Container exceeded its memory limit of 128Mi. The process allocated ~180Mi during a traffic spike, triggering the OOMKilled signal from the kernel cgroup memory controller.",
+    "explanation": "The pod ran out of memory and was killed by Kubernetes. K8sWhisperer automatically increased the memory limit from 128Mi to 256Mi and restarted the pod.",
+    "result": "✅ Memory limit patched 128Mi → 256Mi. Pod restarted successfully. New pod running healthy for 5 minutes.",
+    "blockchain_tx_hash": "pIEotD725XD515PprNwC/Wvaa6oFg93O9Qoyk7bZv0U="
+  },
+  {
+    "incident_id": "INC-002-crash-loop",
+    "timestamp": "2026-03-30T05:23:10Z",
+    "anomaly_type": "CrashLoopBackOff",
+    "affected_resource": "default/crashloop-test",
+    "plan_action": "restart_pod",
+    "plan_blast_radius": "low",
+    "decision": "auto_executed",
+    "diagnosis": "Container repeatedly crashing with exit code 1. Application startup failed due to missing configuration ConfigMap 'app-config' which was recently deleted. BackOff delay reached 5 minutes.",
+    "explanation": "The pod kept crashing on startup because a required config file was missing. K8sWhisperer detected the missing ConfigMap, recreated it from the last known state, and restarted the pod.",
+    "result": "✅ ConfigMap 'app-config' restored. Pod restarted. Container now running stable with 0 restarts.",
+    "blockchain_tx_hash": "6diM9VcmFjpdNDoX2lZelunZe3iyhm2m93y07pDcsn8="
+  },
+  {
+    "incident_id": "INC-003-pending-pod",
+    "timestamp": "2026-03-30T05:23:15Z",
+    "anomaly_type": "PendingPod",
+    "affected_resource": "default/pending-test",
+    "plan_action": "scale_resources",
+    "plan_blast_radius": "medium",
+    "decision": "auto_executed",
+    "diagnosis": "Pod stuck in Pending state for >10 minutes. Scheduler unable to place pod due to insufficient CPU on all nodes. Requested 500m CPU but max available across nodes is 200m.",
+    "explanation": "The pod couldn't start because the cluster didn't have enough CPU available. K8sWhisperer reduced the CPU request from 500m to 250m, allowing the scheduler to place the pod on an existing node.",
+    "result": "✅ CPU request adjusted 500m → 250m. Pod scheduled on node 'worker-02'. Running and healthy.",
+    "blockchain_tx_hash": "XoLrCQyqBghCM1bz7fa2+Z/jvhsaIb2pnupW8Z7cqC8="
+  }
+]

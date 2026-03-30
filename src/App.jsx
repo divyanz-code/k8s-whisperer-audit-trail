@@ -11,14 +11,21 @@ function App() {
 
   const fetchIncidents = async () => {
     try {
-      const res = await fetch('/api/audit-log')
-      if (res.ok) { setIncidents(await res.json()) }
+      // Try static file first (works standalone without backend)
+      const res = await fetch('/audit_log.json')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.length > 0) { setIncidents(data) }
+      }
     } catch {
       try {
-        const res = await fetch('/audit_log.json')
+        // Fallback to API endpoint (when K8sWhisperer backend is running)
+        const res = await fetch('/api/audit-log')
         if (res.ok) { setIncidents(await res.json()) }
       } catch (e) { console.log('Could not fetch incidents:', e) }
-    } finally { setLoading(false); setLastRefresh(new Date()) }
+    }
+    setLoading(false)
+    setLastRefresh(new Date())
   }
 
   useEffect(() => { fetchIncidents(); const i = setInterval(fetchIncidents, 10000); return () => clearInterval(i) }, [])
